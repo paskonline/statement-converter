@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statement Converter</title>
+    <title>BOC Statement Converter</title>
     <style>
         :root {
             --boc-blue: #004494;
@@ -65,7 +65,14 @@
         }
         button:hover { background-color: var(--boc-blue-hover); }
         button:disabled { background-color: #94a3b8; cursor: not-allowed; }
-        .table-container { overflow-x: auto; border: 1px solid var(--border-color); border-radius: 8px; }
+        
+        .table-container { 
+            overflow-x: auto; 
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            /* Smooth scrolling for mobile */
+            -webkit-overflow-scrolling: touch;
+        }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; }
         th, td { padding: 12px 15px; border-bottom: 1px solid var(--border-color); }
         th { background-color: #f8fafc; font-weight: 600; color: #475569; white-space: nowrap; }
@@ -73,6 +80,34 @@
         tr:hover { background-color: #f1f5f9; }
         .amount { text-align: right; font-family: monospace; }
         .empty-state { text-align: center; padding: 40px; color: #64748b; font-style: italic; }
+        
+        /* Mobile Device Adjustments */
+        @media (max-width: 600px) {
+            body { padding: 10px; }
+            .container { padding: 15px; }
+            .header-controls {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 15px;
+            }
+            .header-controls h2 { text-align: center; margin: 0; font-size: 22px; }
+            button { width: 100%; padding: 15px; font-size: 16px; }
+            th, td { padding: 10px; font-size: 13px; }
+            /* Mobile hint for the table */
+            .mobile-swipe-hint {
+                display: block;
+                text-align: center;
+                font-size: 12px;
+                color: #64748b;
+                padding: 8px;
+                background: #f8fafc;
+                border-bottom: 1px solid var(--border-color);
+            }
+        }
+        /* Hide mobile hint on desktop */
+        @media (min-width: 601px) {
+            .mobile-swipe-hint { display: none; }
+        }
     </style>
 </head>
 <body>
@@ -86,6 +121,7 @@
     <textarea id="rawInput" placeholder="Paste the raw text from your BOC PDF statement here... The table below will update instantly." oninput="processText()"></textarea>
 
     <div class="table-container">
+        <div class="mobile-swipe-hint">← Swipe table left/right to see more →</div>
         <table id="resultTable">
             <thead>
                 <tr>
