@@ -36,4 +36,4 @@ This tool is built entirely with vanilla HTML, CSS, and JavaScript. There is no 
 * Vanilla JavaScript (ES6)
 
 ---
-*Note: This is an independent tool and is not officially affiliated with or endorsed by a Bank.*
+*Note: This is an independent tool and is not officially affiliated with or endorsed by an authorized bank.*
