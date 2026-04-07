@@ -9,16 +9,41 @@
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     </script>
     <style>
+        /* =========================================
+           1. COLOR VARIABLES (LIGHT MODE DEFAULT)
+           ========================================= */
         :root {
-            --primary: #4f46e5;      /* Indigo 600 */
+            --primary: #4f46e5;       /* Indigo 600 */
             --primary-hover: #4338ca; /* Indigo 700 */
             --bg-color: #f1f5f9;      /* Slate 100 */
-            --surface: #ffffff;
+            --surface: #ffffff;       /* White */
             --border: #e2e8f0;        /* Slate 200 */
             --text-main: #0f172a;     /* Slate 900 */
             --text-muted: #64748b;    /* Slate 500 */
             --radius: 12px;
+            --modal-bg: rgba(15, 23, 42, 0.6);
         }
+
+        /* =========================================
+           2. COLOR VARIABLES (DARK MODE)
+           ========================================= */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --primary: #6366f1;       /* Indigo 500 (Lighter for dark mode) */
+                --primary-hover: #818cf8; /* Indigo 400 */
+                --bg-color: #0f172a;      /* Slate 900 */
+                --surface: #1e293b;       /* Slate 800 */
+                --border: #334155;        /* Slate 700 */
+                --text-main: #f8fafc;     /* Slate 50 */
+                --text-muted: #94a3b8;    /* Slate 400 */
+                --modal-bg: rgba(0, 0, 0, 0.75);
+            }
+        }
+
+        /* =========================================
+           3. BASE STYLES & LAYOUT
+           ========================================= */
+        *, *::before, *::after { box-sizing: border-box; }
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
@@ -29,157 +54,147 @@
             line-height: 1.5;
         }
         
-        .container { 
-            max-width: 1000px; 
-            margin: 0 auto; 
-        }
+        .container { max-width: 1000px; margin: 0 auto; }
 
-        /* Header UI */
-        .app-header {
-            text-align: center;
-            margin-bottom: 30px;
-        }
-        .app-header h1 {
-            margin: 0 0 10px 0;
-            color: var(--text-main);
-            font-size: 28px;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-        }
-        .app-header p {
-            margin: 0;
-            color: var(--text-muted);
-            font-size: 15px;
-        }
+        .app-header { text-align: center; margin-bottom: 30px; }
+        .app-header h1 { margin: 0 0 10px 0; color: var(--text-main); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
+        .app-header p { margin: 0; color: var(--text-muted); font-size: 15px; }
 
-        /* Card Panels */
         .panel {
-            background: var(--surface);
-            padding: 30px;
-            border-radius: var(--radius);
+            background: var(--surface); padding: 30px; border-radius: var(--radius);
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
-            margin-bottom: 24px;
-            border: 1px solid var(--border);
+            margin-bottom: 24px; border: 1px solid var(--border);
         }
 
-        /* Controls Area (Dropdown & Tabs) */
-        .controls-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 20px;
-            align-items: end;
-            margin-bottom: 25px;
+        /* =========================================
+           4. WELCOME MODAL (POPUP)
+           ========================================= */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--modal-bg); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px);
+            display: flex; justify-content: center; align-items: center;
+            z-index: 1000; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
+        .modal-overlay.show { opacity: 1; pointer-events: auto; }
+        
+        .modal-content {
+            background: var(--surface); padding: 30px; border-radius: var(--radius);
+            max-width: 450px; width: 90%; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.2);
+            border: 1px solid var(--border); text-align: center;
+        }
+        .modal-content h2 { margin-top: 0; color: var(--text-main); font-size: 22px; }
+        .modal-content p { color: var(--text-muted); font-size: 15px; margin-bottom: 20px; }
+        
+        .feature-list { text-align: left; margin: 0 0 25px 0; padding: 0; list-style: none; color: var(--text-muted); font-size: 14px; }
+        .feature-list li { margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
+        .feature-list strong { color: var(--text-main); display: block; }
+        
+        .modal-btn { width: 100%; justify-content: center; padding: 14px; font-size: 16px; }
 
-        .input-group label {
-            display: block;
-            font-size: 13px;
-            font-weight: 600;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
+        /* =========================================
+           5. CONTROLS (TABS & DROPDOWN)
+           ========================================= */
+        .controls-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; align-items: end; margin-bottom: 25px; }
+        .input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         select {
-            width: 100%;
-            padding: 12px 16px;
-            font-size: 15px;
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            background-color: #f8fafc;
-            color: var(--text-main);
-            cursor: pointer;
-            outline: none;
-            transition: border-color 0.2s;
+            width: 100%; max-width: 100%; padding: 12px 40px 12px 16px; 
+            font-size: 16px; /* CRITICAL: Prevents iOS Zoom */
+            border: 1px solid var(--border); border-radius: 8px; background-color: var(--bg-color); color: var(--text-main);
+            cursor: pointer; outline: none; transition: border-color 0.2s;
+            appearance: none; -webkit-appearance: none; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%2364748b%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat; background-position: right 15px top 50%; background-size: 12px auto;
         }
         select:focus { border-color: var(--primary); }
 
-        .tabs { 
-            display: flex; 
-            background: #f8fafc;
-            padding: 6px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-        }
-        .tab { 
-            flex: 1;
-            text-align: center;
-            padding: 10px 20px; 
-            cursor: pointer; 
-            font-weight: 600; 
-            color: var(--text-muted); 
-            border-radius: 6px;
-            transition: all 0.2s ease; 
-        }
+        .tabs { display: flex; background: var(--bg-color); padding: 6px; border-radius: 10px; border: 1px solid var(--border); }
+        .tab { flex: 1; text-align: center; padding: 10px 20px; cursor: pointer; font-weight: 600; color: var(--text-muted); border-radius: 6px; transition: all 0.2s ease; }
         .tab:hover { color: var(--text-main); }
-        .tab.active { 
-            background: var(--surface); 
-            color: var(--primary); 
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
-        }
+        .tab.active { background: var(--surface); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         
-        /* Upload Area */
-        .upload-area { 
-            border: 2px dashed #cbd5e1; 
-            padding: 40px 20px; 
-            text-align: center; 
-            border-radius: 10px; 
-            background-color: #f8fafc; 
-            transition: all 0.2s; 
-        }
-        .upload-area:hover { border-color: var(--primary); background-color: #f1f5f9; }
-        input[type="file"] { margin-top: 15px; font-size: 15px; cursor: pointer; }
+        /* =========================================
+           6. UPLOAD AREA
+           ========================================= */
+        .upload-area { border: 2px dashed var(--border); padding: 40px 20px; text-align: center; border-radius: 10px; background-color: var(--bg-color); transition: all 0.2s; }
+        .upload-area:hover { border-color: var(--primary); }
+        input[type="file"] { margin-top: 15px; font-size: 15px; cursor: pointer; max-width: 100%; color: var(--text-main); }
         
-        /* Password Prompt Area */
         #passwordArea { display: none; margin-top: 25px; padding-top: 25px; border-top: 1px solid var(--border); }
         .pwd-alert { color: #ef4444; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;}
-        input[type="password"] { padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; margin-right: 10px; width: 220px; font-size: 15px; outline: none;}
+        input[type="password"] { 
+            padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; margin-right: 10px; width: 220px; 
+            font-size: 16px; /* CRITICAL: Prevents iOS Zoom */
+            outline: none; background: var(--surface); color: var(--text-main);
+        }
         input[type="password"]:focus { border-color: var(--primary); }
         
-        /* Buttons */
-        button { 
-            background-color: var(--primary); 
-            color: white; 
-            border: none; 
-            padding: 12px 24px; 
-            font-size: 15px; 
-            font-weight: 600; 
-            border-radius: 8px; 
-            cursor: pointer; 
-            transition: background-color 0.2s; 
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-        }
+        button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; }
         button:hover { background-color: var(--primary-hover); }
-        button:disabled { background-color: #94a3b8; cursor: not-allowed; opacity: 0.7;}
+        button:disabled { background-color: var(--border); color: var(--text-muted); cursor: not-allowed; opacity: 0.7;}
         
         .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px;}
         #statusMessage { font-weight: 500; font-size: 14px; }
 
-        /* Table Styling */
-        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); }
+        /* =========================================
+           7. TABLE STYLING
+           ========================================= */
+        .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; background: var(--surface);}
         th, td { padding: 14px 16px; border-bottom: 1px solid var(--border); }
-        th { background-color: #f8fafc; font-weight: 600; color: var(--text-muted); white-space: nowrap; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;}
+        th { background-color: var(--bg-color); font-weight: 600; color: var(--text-muted); white-space: nowrap; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px;}
         tr:last-child td { border-bottom: none; }
-        tr:hover td { background-color: #f8fafc; }
+        tr:hover td { background-color: var(--bg-color); }
         .amount { text-align: right; font-family: 'Courier New', Courier, monospace; font-weight: 600;}
         .empty-state { text-align: center; padding: 60px 20px; color: var(--text-muted); font-style: italic; background: var(--surface);}
 
+        .mobile-scroll-hint { display: none; text-align: center; font-size: 12px; color: var(--text-muted); padding: 8px; background: var(--bg-color); border-bottom: 1px solid var(--border); }
+
+        /* =========================================
+           8. MOBILE RESPONSIVENESS
+           ========================================= */
         @media (max-width: 768px) {
+            body { padding: 15px 10px; }
+            .panel { padding: 20px 15px; }
+            .app-header h1 { font-size: 24px; }
             .controls-grid { grid-template-columns: 1fr; gap: 15px;}
-            .tabs { flex-direction: column; }
+            .tabs { flex-direction: column; background: transparent; border: none; padding: 0; gap: 5px; }
+            .tab { border: 1px solid var(--border); }
+            .upload-area { padding: 30px 15px; }
             .action-row { flex-direction: column; gap: 15px; align-items: stretch; text-align: center;}
+            .action-row button { width: 100%; justify-content: center; }
             input[type="password"] { width: 100%; margin-bottom: 10px; margin-right: 0;}
+            .mobile-scroll-hint { display: block; }
         }
     </style>
 </head>
 <body>
 
+<div id="welcomeModal" class="modal-overlay">
+    <div class="modal-content">
+        <h2>Statement Converter 👋</h2>
+        <p>Instantly convert your bank PDF statements into Excel-ready CSV files.</p>
+        
+        <ul class="feature-list">
+            <li>
+                <span>🔒</span>
+                <div><strong>100% Secure & Private</strong><br>Processed locally on your device. No data is sent to the internet.</div>
+            </li>
+            <li>
+                <span>🪄</span>
+                <div><strong>Smart Parsing</strong><br>Automatically cleans up messy PDF text and detects dates.</div>
+            </li>
+            <li>
+                <span>🧮</span>
+                <div><strong>Auto-Math Engine</strong><br>Accurately separates Debits, Credits, and calculates running balances.</div>
+            </li>
+        </ul>
+
+        <button onclick="closeModal()" class="modal-btn">I Understand, Let's Go!</button>
+    </div>
+</div>
+
 <div class="container">
-    
     <div class="app-header">
         <h1>Statement Converter</h1>
         <p>Secure, local conversion of bank PDF statements to CSV</p>
@@ -207,7 +222,7 @@
         </div>
 
         <div class="upload-area">
-            <svg style="width: 48px; height: 48px; color: #94a3b8; margin-bottom: 10px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg><br>
+            <svg style="width: 48px; height: 48px; color: var(--text-muted); margin-bottom: 10px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"></path></svg><br>
             <strong style="font-size: 18px;">Select a PDF Statement</strong><br>
             <span style="font-size: 13px; color: var(--text-muted);">(Processed locally. No data leaves your device.)</span><br>
             <input type="file" id="pdfFile" accept="application/pdf" onchange="resetAndProcess()" />
@@ -233,6 +248,7 @@
 
     <div class="panel" style="padding: 0; overflow: hidden;">
         <div class="table-container">
+            <div class="mobile-scroll-hint">← Swipe table to see more →</div>
             <table id="resultTable">
                 <thead id="tableHeader">
                     </thead>
@@ -245,12 +261,21 @@
 </div>
 
 <script>
+    // --- MODAL LOGIC ---
+    window.onload = function() {
+        // Show the popup automatically when the page loads
+        document.getElementById('welcomeModal').classList.add('show');
+    };
+    function closeModal() {
+        document.getElementById('welcomeModal').classList.remove('show');
+    }
+
+    // --- CONVERTER LOGIC ---
     let activeTab = 'credit';
     let parsedData = [];
     let extractedLines = []; 
-    let documentYear = new Date().getFullYear(); // Fallback year
+    let documentYear = new Date().getFullYear(); 
 
-    // Initialize headers on load
     updateHeaders();
 
     function switchTab(tabName) {
@@ -293,15 +318,12 @@
         processPDF();
     }
 
-    // Helper: Format DD/MM/YYYY or DD/MM into standard YYYY-MM-DD
     function formatToYYYYMMDD(dateStr) {
         if (!dateStr) return "";
-        // DD/MM/YYYY Format
         if (dateStr.length === 10 && dateStr.includes('/')) {
             const parts = dateStr.split('/');
             return `${parts[2]}-${parts[1]}-${parts[0]}`;
         }
-        // DD/MM Format (needs documentYear)
         if (dateStr.length === 5 && dateStr.includes('/')) {
             const parts = dateStr.split('/');
             return `${documentYear}-${parts[1]}-${parts[0]}`;
@@ -309,7 +331,6 @@
         return dateStr;
     }
 
-    // Connects to PDF.js and reads the file
     async function processPDF() {
         const fileInput = document.getElementById('pdfFile');
         const passwordInput = document.getElementById('pdfPassword').value;
@@ -342,7 +363,7 @@
                     const rows = {};
                     
                     textContent.items.forEach(item => {
-                        fullRawText += item.str + " "; // Append to big string for year hunting
+                        fullRawText += item.str + " "; 
                         const y = Math.round(item.transform[5] / 6) * 6;
                         if (!rows[y]) rows[y] = [];
                         rows[y].push(item);
@@ -356,7 +377,6 @@
                     });
                 }
 
-                // Attempt to find the Statement Year for formatting partial dates
                 const yearMatch = fullRawText.match(/20\d{2}/);
                 if (yearMatch) documentYear = yearMatch[0];
 
@@ -375,15 +395,12 @@
         fileReader.readAsArrayBuffer(file);
     }
 
-    // Parses the extracted lines based on Bank and Tab
     function parseData() {
         const selectedBank = document.getElementById('bankSelect').value;
         parsedData = [];
         let runningBalance = 0;
 
-        // --- BANK OF CEYLON LOGIC ---
         if (selectedBank === 'boc') {
-            
             if (activeTab === 'credit') {
                 const dateRegex = /\d{2}\/\d{2}\/\d{4}/g;
                 const amountRegex = /[\d,]+\.\d{2}(?:\s*CR)?/ig;
@@ -402,10 +419,8 @@
                         let amounts = line.match(amountRegex);
                         
                         if (dates && amounts && amounts.length > 0) {
-                            // Standardize Dates
                             let postDate = formatToYYYYMMDD(dates[0]);
                             let invDate = dates.length > 1 ? formatToYYYYMMDD(dates[1]) : "";
-                            
                             let amountStr = amounts[amounts.length - 1];
                             let isCredit = amountStr.toUpperCase().includes("CR");
                             let cleanVal = parseFloat(amountStr.replace(/CR/i, '').replace(/,/g, '').trim());
@@ -433,7 +448,6 @@
                     }
                     else if (rowStartRegex.test(line)) {
                         let amounts = line.match(currencyRegex);
-                        
                         if (amounts && amounts.length >= 2) {
                             let rawDate = line.match(/^\d{2}\/\d{2}/)[0];
                             let formattedDate = formatToYYYYMMDD(rawDate);
@@ -450,16 +464,14 @@
                             else withdrawals = txnAmount.toFixed(2);
 
                             runningBalance = rowBalance;
-
                             let description = line.replace(rawDate, '').replace(rowBalanceStr, '').replace(txnAmountStr, '').replace(/\s+/g, ' ').trim();
+                            
                             parsedData.push({ col1: formattedDate, col2: "", col3: description, col4: withdrawals, col5: deposits, col6: rowBalance.toFixed(2) });
                         }
                     }
                 });
             }
         } 
-        // --- ADD OTHER BANKS HERE LATER ---
-
         renderTable();
     }
 
