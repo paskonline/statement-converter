@@ -13,13 +13,13 @@
            1. COLOR VARIABLES (LIGHT MODE DEFAULT)
            ========================================= */
         :root {
-            --primary: #4f46e5;       /* Indigo 600 */
-            --primary-hover: #4338ca; /* Indigo 700 */
-            --bg-color: #f1f5f9;      /* Slate 100 */
-            --surface: #ffffff;       /* White */
-            --border: #e2e8f0;        /* Slate 200 */
-            --text-main: #0f172a;     /* Slate 900 */
-            --text-muted: #64748b;    /* Slate 500 */
+            --primary: #4f46e5;       
+            --primary-hover: #4338ca; 
+            --bg-color: #f1f5f9;      
+            --surface: #ffffff;       
+            --border: #e2e8f0;        
+            --text-main: #0f172a;     
+            --text-muted: #64748b;    
             --radius: 12px;
             --modal-bg: rgba(15, 23, 42, 0.6);
         }
@@ -29,13 +29,13 @@
            ========================================= */
         @media (prefers-color-scheme: dark) {
             :root {
-                --primary: #6366f1;       /* Indigo 500 (Lighter for dark mode) */
-                --primary-hover: #818cf8; /* Indigo 400 */
-                --bg-color: #0f172a;      /* Slate 900 */
-                --surface: #1e293b;       /* Slate 800 */
-                --border: #334155;        /* Slate 700 */
-                --text-main: #f8fafc;     /* Slate 50 */
-                --text-muted: #94a3b8;    /* Slate 400 */
+                --primary: #6366f1;       
+                --primary-hover: #818cf8; 
+                --bg-color: #0f172a;      
+                --surface: #1e293b;       
+                --border: #334155;        
+                --text-main: #f8fafc;     
+                --text-muted: #94a3b8;    
                 --modal-bg: rgba(0, 0, 0, 0.75);
             }
         }
@@ -47,14 +47,11 @@
         
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--bg-color); 
-            color: var(--text-main); 
-            margin: 0; 
-            padding: 30px 15px; 
-            line-height: 1.5;
+            background-color: var(--bg-color); color: var(--text-main); 
+            margin: 0; padding: 30px 15px; line-height: 1.5;
         }
         
-        .container { max-width: 1000px; margin: 0 auto; }
+        .container { max-width: 1100px; margin: 0 auto; }
 
         .app-header { text-align: center; margin-bottom: 30px; }
         .app-header h1 { margin: 0 0 10px 0; color: var(--text-main); font-size: 28px; font-weight: 700; letter-spacing: -0.5px; }
@@ -89,17 +86,17 @@
         .feature-list li { margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
         .feature-list strong { color: var(--text-main); display: block; }
         
-        .modal-btn { width: 100%; justify-content: center; padding: 14px; font-size: 16px; }
+        .modal-btn { width: 100%; justify-content: center; padding: 14px; font-size: 16px; background-color: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; transition: 0.2s;}
+        .modal-btn:hover { background-color: var(--primary-hover); }
 
         /* =========================================
-           5. CONTROLS (TABS & DROPDOWN)
+           5. CONTROLS & UPLOAD AREA
            ========================================= */
         .controls-grid { display: grid; grid-template-columns: 1fr 2fr; gap: 20px; align-items: end; margin-bottom: 25px; }
         .input-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.5px; }
         
         select {
-            width: 100%; max-width: 100%; padding: 12px 40px 12px 16px; 
-            font-size: 16px; /* CRITICAL: Prevents iOS Zoom */
+            width: 100%; max-width: 100%; padding: 12px 40px 12px 16px; font-size: 16px;
             border: 1px solid var(--border); border-radius: 8px; background-color: var(--bg-color); color: var(--text-main);
             cursor: pointer; outline: none; transition: border-color 0.2s;
             appearance: none; -webkit-appearance: none; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;
@@ -113,9 +110,6 @@
         .tab:hover { color: var(--text-main); }
         .tab.active { background: var(--surface); color: var(--primary); box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
         
-        /* =========================================
-           6. UPLOAD AREA
-           ========================================= */
         .upload-area { border: 2px dashed var(--border); padding: 40px 20px; text-align: center; border-radius: 10px; background-color: var(--bg-color); transition: all 0.2s; }
         .upload-area:hover { border-color: var(--primary); }
         input[type="file"] { margin-top: 15px; font-size: 15px; cursor: pointer; max-width: 100%; color: var(--text-main); }
@@ -124,20 +118,23 @@
         .pwd-alert { color: #ef4444; font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; gap: 8px;}
         input[type="password"] { 
             padding: 12px 16px; border: 1px solid var(--border); border-radius: 8px; margin-right: 10px; width: 220px; 
-            font-size: 16px; /* CRITICAL: Prevents iOS Zoom */
-            outline: none; background: var(--surface); color: var(--text-main);
+            font-size: 16px; outline: none; background: var(--surface); color: var(--text-main);
         }
         input[type="password"]:focus { border-color: var(--primary); }
         
-        button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; display: inline-flex; align-items: center; gap: 8px; }
+        button { background-color: var(--primary); color: white; border: none; padding: 12px 24px; font-size: 15px; font-weight: 600; border-radius: 8px; cursor: pointer; transition: background-color 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         button:hover { background-color: var(--primary-hover); }
         button:disabled { background-color: var(--border); color: var(--text-muted); cursor: not-allowed; opacity: 0.7;}
         
         .action-row { display: flex; justify-content: space-between; align-items: center; margin-top: 20px;}
         #statusMessage { font-weight: 500; font-size: 14px; }
+        
+        /* PROGRESS BAR */
+        .progress-container { display: none; width: 100%; background: var(--border); border-radius: 6px; margin-top: 20px; overflow: hidden; height: 8px;}
+        .progress-bar { height: 100%; background: var(--primary); width: 0%; transition: width 0.2s; }
 
         /* =========================================
-           7. TABLE STYLING
+           6. TABLE STYLING
            ========================================= */
         .table-container { overflow-x: auto; border-radius: 8px; border: 1px solid var(--border); -webkit-overflow-scrolling: touch; }
         table { width: 100%; border-collapse: collapse; text-align: left; font-size: 14px; background: var(--surface);}
@@ -151,7 +148,7 @@
         .mobile-scroll-hint { display: none; text-align: center; font-size: 12px; color: var(--text-muted); padding: 8px; background: var(--bg-color); border-bottom: 1px solid var(--border); }
 
         /* =========================================
-           8. MOBILE RESPONSIVENESS
+           7. MOBILE RESPONSIVENESS
            ========================================= */
         @media (max-width: 768px) {
             body { padding: 15px 10px; }
@@ -173,20 +170,20 @@
 <div id="welcomeModal" class="modal-overlay">
     <div class="modal-content">
         <h2>Statement Converter 👋</h2>
-        <p>Instantly convert your bank PDF statements into Excel-ready CSV files.</p>
+        <p>Instantly convert your Bank PDF statements into Excel-ready CSV files.</p>
         
         <ul class="feature-list">
             <li>
                 <span>🔒</span>
-                <div><strong>100% Secure & Private</strong><br>Processed locally on your device. No data is sent to the internet.</div>
+                <div><strong>100% Secure & Local</strong><br>Processed entirely on your device. Absolutely no financial data is sent to the internet.</div>
             </li>
             <li>
-                <span>🪄</span>
-                <div><strong>Smart Parsing</strong><br>Automatically cleans up messy PDF text and detects dates.</div>
+                <span>🏦</span>
+                <div><strong>Multi-Bank Support</strong><br>Optimized formats for BOC and NTB Corporate statements.</div>
             </li>
             <li>
                 <span>🧮</span>
-                <div><strong>Auto-Math Engine</strong><br>Accurately separates Debits, Credits, and calculates running balances.</div>
+                <div><strong>Auto-Math Engine</strong><br>Accurately separates Debits and Credits and calculates running balances.</div>
             </li>
         </ul>
 
@@ -196,7 +193,7 @@
 
 <div class="container">
     <div class="app-header">
-        <h1>Statement Converter</h1>
+        <h1>Universal Statement Converter</h1>
         <p>Secure, local conversion of bank PDF statements to CSV</p>
     </div>
 
@@ -206,8 +203,8 @@
                 <label>Institution</label>
                 <select id="bankSelect" onchange="resetAndProcess()">
                     <option value="boc">Bank of Ceylon (BOC)</option>
+                    <option value="ntb">Nations Trust Bank (NTB Amex)</option>
                     <option value="combank" disabled>Commercial Bank (Coming Soon)</option>
-                    <option value="hnb" disabled>Hatton National Bank (Coming Soon)</option>
                     <option value="sampath" disabled>Sampath Bank (Coming Soon)</option>
                 </select>
             </div>
@@ -234,6 +231,10 @@
                 </div>
                 <input type="password" id="pdfPassword" placeholder="Enter PDF Password">
                 <button onclick="processPDF()">Unlock & Extract</button>
+            </div>
+
+            <div class="progress-container" id="progressContainer">
+                <div class="progress-bar" id="progressBar"></div>
             </div>
         </div>
 
@@ -262,13 +263,8 @@
 
 <script>
     // --- MODAL LOGIC ---
-    window.onload = function() {
-        // Show the popup automatically when the page loads
-        document.getElementById('welcomeModal').classList.add('show');
-    };
-    function closeModal() {
-        document.getElementById('welcomeModal').classList.remove('show');
-    }
+    window.onload = function() { document.getElementById('welcomeModal').classList.add('show'); };
+    function closeModal() { document.getElementById('welcomeModal').classList.remove('show'); }
 
     // --- CONVERTER LOGIC ---
     let activeTab = 'credit';
@@ -291,7 +287,7 @@
     function updateHeaders() {
         const thead = document.getElementById('tableHeader');
         if (activeTab === 'credit') {
-            thead.innerHTML = `<tr><th>Post Date</th><th>Inv. Date</th><th>Description</th><th class="amount">Dr Amount</th><th class="amount">Cr Amount</th><th class="amount">Balance</th></tr>`;
+            thead.innerHTML = `<tr><th>Post Date</th><th>Date 2</th><th>Description</th><th class="amount">Dr Amount</th><th class="amount">Cr Amount</th><th class="amount">Balance</th></tr>`;
         } else {
             thead.innerHTML = `<tr><th>Date</th><th>Description</th><th class="amount">Withdrawal</th><th class="amount">Deposit</th><th class="amount">Balance</th></tr>`;
         }
@@ -305,6 +301,11 @@
         else el.style.color = 'var(--text-muted)';
     }
 
+    function updateProgress(percent) {
+        document.getElementById('progressContainer').style.display = 'block';
+        document.getElementById('progressBar').style.width = percent + '%';
+    }
+
     function clearTable() {
         document.getElementById('tableBody').innerHTML = `<tr><td colspan="6" class="empty-state">Upload a PDF to view formatted data.</td></tr>`;
         document.getElementById('downloadBtn').disabled = true;
@@ -315,18 +316,25 @@
         extractedLines = [];
         document.getElementById('pdfPassword').value = '';
         document.getElementById('passwordArea').style.display = 'none';
+        document.getElementById('progressContainer').style.display = 'none';
         processPDF();
     }
 
     function formatToYYYYMMDD(dateStr) {
         if (!dateStr) return "";
-        if (dateStr.length === 10 && dateStr.includes('/')) {
+        // DD/MM/YYYY
+        if (dateStr.includes('/')) {
             const parts = dateStr.split('/');
-            return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            if (parts.length === 2) return `${documentYear}-${parts[1]}-${parts[0]}`;
         }
-        if (dateStr.length === 5 && dateStr.includes('/')) {
-            const parts = dateStr.split('/');
-            return `${documentYear}-${parts[1]}-${parts[0]}`;
+        // DD-MMM-YYYY (NTB format)
+        if (dateStr.includes('-')) {
+            const months = {"JAN":"01","FEB":"02","MAR":"03","APR":"04","MAY":"05","JUN":"06","JUL":"07","AUG":"08","SEP":"09","OCT":"10","NOV":"11","DEC":"12"};
+            const parts = dateStr.split('-');
+            if (parts.length === 3) {
+                return `${parts[2]}-${months[parts[1].toUpperCase()] || '00'}-${parts[0]}`;
+            }
         }
         return dateStr;
     }
@@ -338,26 +346,26 @@
         
         if (!fileInput.files.length) return;
 
-        setStatus("Reading PDF document...", 'info');
+        setStatus("Initializing PDF Engine...", 'info');
         const file = fileInput.files[0];
         const fileReader = new FileReader();
 
         fileReader.onload = async function() {
             const typedarray = new Uint8Array(this.result);
             try {
-                const loadingTask = pdfjsLib.getDocument({
-                    data: typedarray,
-                    password: passwordInput || undefined
-                });
-
+                const loadingTask = pdfjsLib.getDocument({ data: typedarray, password: passwordInput || undefined });
                 const pdf = await loadingTask.promise;
                 passArea.style.display = 'none';
-                setStatus("Extracting layout data...", 'info');
-
+                
                 extractedLines = [];
                 let fullRawText = "";
                 
+                // Async loop for massive PDFs (prevents freezing)
                 for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+                    setStatus(`Extracting page ${pageNum} of ${pdf.numPages}...`, 'info');
+                    updateProgress(Math.round((pageNum / pdf.numPages) * 100));
+                    await new Promise(resolve => setTimeout(resolve, 1)); 
+
                     const page = await pdf.getPage(pageNum);
                     const textContent = await page.getTextContent();
                     const rows = {};
@@ -377,14 +385,17 @@
                     });
                 }
 
+                // Global Year Check for short dates
                 const yearMatch = fullRawText.match(/20\d{2}/);
                 if (yearMatch) documentYear = yearMatch[0];
 
+                document.getElementById('progressContainer').style.display = 'none';
                 parseData();
 
             } catch (error) {
                 if (error.name === 'PasswordException') {
                     passArea.style.display = 'block';
+                    document.getElementById('progressContainer').style.display = 'none';
                     setStatus("Password required to unlock document.", 'error');
                 } else {
                     console.error(error);
@@ -400,17 +411,71 @@
         parsedData = [];
         let runningBalance = 0;
 
-        if (selectedBank === 'boc') {
+        // ==========================================
+        // LOGIC: NATIONS TRUST BANK (AMEX)
+        // ==========================================
+        if (selectedBank === 'ntb' && activeTab === 'credit') {
+            const dateRegex = /\d{2}-[A-Z]{3}-\d{4}/ig; 
+            const amountRegex = /[\d,]+\.\d{2}(?:\s*CR)?/ig;
+
+            extractedLines.forEach(line => {
+                // Set initial running balance
+                if (line.includes("OPENING BALANCE") && line.match(dateRegex)) {
+                    let amounts = line.match(/[\d,]+(?:\.\d+)?(?:\s*CR)?/gi);
+                    if (amounts && amounts.length > 0) {
+                        let amountStr = amounts[amounts.length - 1];
+                        let val = parseFloat(amountStr.replace(/CR/i, '').replace(/,/g, '').trim());
+                        runningBalance = amountStr.toUpperCase().includes("CR") ? -val : val;
+                    }
+                    return; 
+                }
+                
+                // Skip summary rows
+                if (line.includes("CLOSING BALANCE") || line.includes("END OF STATEMENT") || line.includes("ACCOUNT SUMMARY") || line.includes("TRANSACTION DETAILS")) return;
+
+                // Process Standard Rows
+                if (line.match(dateRegex)) {
+                    let dates = line.match(dateRegex);
+                    let amounts = line.match(amountRegex);
+                    
+                    if (dates && amounts && amounts.length > 0) {
+                        let postDate = formatToYYYYMMDD(dates[0]);
+                        let txnDate = dates.length > 1 ? formatToYYYYMMDD(dates[1]) : postDate;
+                        
+                        // Grab ONLY the very last amount on the line
+                        let lastAmountStr = amounts[amounts.length - 1];
+                        let isCredit = lastAmountStr.toUpperCase().includes("CR");
+                        let cleanVal = parseFloat(lastAmountStr.replace(/CR/i, '').replace(/,/g, '').trim());
+
+                        let dr = "", cr = "";
+                        if (isCredit) { cr = cleanVal.toFixed(2); runningBalance -= cleanVal; } 
+                        else { dr = cleanVal.toFixed(2); runningBalance += cleanVal; }
+
+                        // Clean Description (Aggressively strip foreign amounts and currency tags)
+                        let dirtyDesc = line.replace(dates[0], '');
+                        if (dates.length > 1) dirtyDesc = dirtyDesc.replace(dates[1], '');
+                        dirtyDesc = dirtyDesc.replace(lastAmountStr, ''); // Remove the final LKR amount
+                        dirtyDesc = dirtyDesc.replace(/\b(LKR|USD|EUR|GBP|AUD|SGD|JPY|CAD|CHF|INR)\b/gi, ''); // Remove currency tags
+                        dirtyDesc = dirtyDesc.replace(/\b\d+(?:,\d{3})*(?:\.\d+)?\b/g, ''); // Remove ALL standalone numbers left over (foreign amounts)
+                        
+                        let cleanDesc = dirtyDesc.replace(/^[^a-zA-Z]+|[^a-zA-Z0-9]+$/g, '').replace(/\s+/g, ' ').trim();
+
+                        parsedData.push({ col1: postDate, col2: txnDate, col3: cleanDesc, col4: dr, col5: cr, col6: runningBalance.toFixed(2) });
+                    }
+                }
+            });
+        }
+        // ==========================================
+        // LOGIC: BANK OF CEYLON
+        // ==========================================
+        else if (selectedBank === 'boc') {
             if (activeTab === 'credit') {
                 const dateRegex = /\d{2}\/\d{2}\/\d{4}/g;
                 const amountRegex = /[\d,]+\.\d{2}(?:\s*CR)?/ig;
 
                 for (let line of extractedLines) {
                     const obMatch = line.match(/Opening Balance[\s\S]*?([\d,]+\.\d{2})/i) || line.match(/([\d,]+\.\d{2})[\s\S]*?Opening Balance/i);
-                    if (obMatch) {
-                        runningBalance = parseFloat(obMatch[1].replace(/,/g, ''));
-                        break;
-                    }
+                    if (obMatch) { runningBalance = parseFloat(obMatch[1].replace(/,/g, '')); break; }
                 }
 
                 extractedLines.forEach(line => {
@@ -451,10 +516,8 @@
                         if (amounts && amounts.length >= 2) {
                             let rawDate = line.match(/^\d{2}\/\d{2}/)[0];
                             let formattedDate = formatToYYYYMMDD(rawDate);
-                            
                             let rowBalanceStr = amounts[amounts.length - 1];
                             let rowBalance = parseFloat(rowBalanceStr.replace(/,/g, ''));
-                            
                             let txnAmountStr = amounts[amounts.length - 2];
                             let txnAmount = parseFloat(txnAmountStr.replace(/,/g, ''));
 
@@ -472,22 +535,25 @@
                 });
             }
         } 
+
         renderTable();
     }
 
     function renderTable() {
         const tbody = document.getElementById('tableBody');
         const btn = document.getElementById('downloadBtn');
-        const bankName = document.getElementById('bankSelect').options[document.getElementById('bankSelect').selectedIndex].text;
+        const bankSelect = document.getElementById('bankSelect');
+        const bankName = bankSelect.options[bankSelect.selectedIndex].text;
         
         if (parsedData.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No transactions found for the selected format.<br><span style="font-size: 13px;">Ensure you selected the correct Statement Type for ${bankName}.</span></td></tr>`;
+            tbody.innerHTML = `<tr><td colspan="6" class="empty-state">No transactions found.<br><span style="font-size: 13px;">Ensure you selected the correct Statement Type for ${bankName}.</span></td></tr>`;
             btn.disabled = true;
             setStatus("Ready.", 'info');
             return;
         }
 
         let html = "";
+        
         if (activeTab === 'credit') {
             html = parsedData.map(row => `<tr><td>${row.col1}</td><td>${row.col2}</td><td>${row.col3}</td><td class="amount">${row.col4}</td><td class="amount">${row.col5}</td><td class="amount">${row.col6}</td></tr>`).join('');
         } else {
@@ -503,19 +569,16 @@
         if (parsedData.length === 0) return;
         const bankCode = document.getElementById('bankSelect').value.toUpperCase();
         
-        let headers = activeTab === 'credit' 
-            ? "POST DATE,INV. DATE,DESCRIPTION,AMOUNT (Dr),AMOUNT (Cr),BALANCE\n"
-            : "DATE,DESCRIPTION,WITHDRAWALS,DEPOSITS,BALANCE\n";
+        let headers = "";
+        if (activeTab === 'credit') headers = "POST DATE,DATE 2,DESCRIPTION,AMOUNT (Dr),AMOUNT (Cr),BALANCE\n";
+        else headers = "DATE,DESCRIPTION,WITHDRAWALS,DEPOSITS,BALANCE\n";
 
         let csvContent = "data:text/csv;charset=utf-8," + headers;
         
         parsedData.forEach(row => {
             const safeDesc = `"${row.col3.replace(/"/g, '""')}"`;
-            if (activeTab === 'credit') {
-                csvContent += `${row.col1},${row.col2},${safeDesc},${row.col4},${row.col5},${row.col6}\n`;
-            } else {
-                csvContent += `${row.col1},${safeDesc},${row.col4},${row.col5},${row.col6}\n`;
-            }
+            if (activeTab === 'credit') csvContent += `${row.col1},${row.col2},${safeDesc},${row.col4},${row.col5},${row.col6}\n`;
+            else csvContent += `${row.col1},${safeDesc},${row.col4},${row.col5},${row.col6}\n`;
         });
 
         const encodedUri = encodeURI(csvContent);
