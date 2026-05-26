@@ -179,7 +179,7 @@
             </li>
             <li>
                 <span>🏦</span>
-                <div><strong>Multi-Bank Support</strong><br>Optimized formats for BOC and NTB Corporate statements.</div>
+                <div><strong>Multi-Bank Support</strong><br>Optimized formats for BOC, Sampath, and NTB Corporate statements.</div>
             </li>
             <li>
                 <span>🧮</span>
@@ -203,9 +203,9 @@
                 <label>Institution</label>
                 <select id="bankSelect" onchange="resetAndProcess()">
                     <option value="boc">Bank of Ceylon (BOC)</option>
+                    <option value="sampath">Sampath Bank</option>
                     <option value="ntb">Nations Trust Bank (NTB Amex)</option>
                     <option value="combank" disabled>Commercial Bank (Coming Soon)</option>
-                    <option value="sampath" disabled>Sampath Bank (Coming Soon)</option>
                 </select>
             </div>
 
@@ -322,10 +322,14 @@
 
     function formatToYYYYMMDD(dateStr) {
         if (!dateStr) return "";
-        // DD/MM/YYYY
+        // DD/MM/YYYY or DD/MM/YY
         if (dateStr.includes('/')) {
             const parts = dateStr.split('/');
-            if (parts.length === 3) return `${parts[2]}-${parts[1]}-${parts[0]}`;
+            if (parts.length === 3) {
+                let year = parts[2];
+                if (year.length === 2) year = "20" + year; // Convert 2-digit year to 4-digit for Sampath
+                return `${year}-${parts[1]}-${parts[0]}`;
+            }
             if (parts.length === 2) return `${documentYear}-${parts[1]}-${parts[0]}`;
         }
         // DD-MMM-YYYY (NTB format)
@@ -464,6 +468,56 @@
                     }
                 }
             });
+        }
+        // ==========================================
+        // LOGIC: SAMPATH BANK
+        // ==========================================
+        else if (selectedBank === 'sampath') {
+            if (activeTab === 'credit') {
+                const dateRegex = /\d{2}\/\d{2}\/\d{2}/g; // Sampath uses 2-digit years
+                const amountRegex = /[\d,]+\.\d{2}(?:\s*CR)?/ig;
+
+                for (let line of extractedLines) {
+                    // Try to catch the opening balance near the page count summary block
+                    const obMatch = line.match(/Page\s+\d+\s+of\s+\d+[\s\S]*?([\d,]+\.\d{2})/i) || line.match(/Opening Balance[\s\S]*?([\d,]+\.\d{2})/i);
+                    if (obMatch) { runningBalance = parseFloat(obMatch[1].replace(/,/g, '')); break; }
+                }
+
+                extractedLines.forEach(line => {
+                    // Skip summary and total rows
+                    let checkLine = line.toUpperCase();
+                    if (checkLine.includes("SUB TOTAL") || checkLine.includes("TOTAL DEBITS") || checkLine.includes("CLEARING BALANCE")) return;
+
+                    if (line.match(dateRegex)) {
+                        let dates = line.match(dateRegex);
+                        let amounts = line.match(amountRegex);
+                        
+                        if (dates && amounts && amounts.length > 0) {
+                            let postDate = formatToYYYYMMDD(dates[0]);
+                            let txnDate = dates.length > 1 ? formatToYYYYMMDD(dates[1]) : postDate;
+                            
+                            let lastAmountStr = amounts[amounts.length - 1];
+                            let isCredit = lastAmountStr.toUpperCase().includes("CR");
+                            let cleanVal = parseFloat(lastAmountStr.replace(/CR/i, '').replace(/,/g, '').trim());
+
+                            let dr = "", cr = "";
+                            if (isCredit) { cr = cleanVal.toFixed(2); runningBalance -= cleanVal; } 
+                            else { dr = cleanVal.toFixed(2); runningBalance += cleanVal; }
+
+                            let dirtyDesc = line.replace(dates[0], '');
+                            if (dates.length > 1) dirtyDesc = dirtyDesc.replace(dates[1], '');
+                            dirtyDesc = dirtyDesc.replace(lastAmountStr, ''); 
+                            
+                            let cleanDesc = dirtyDesc.replace(/^[^a-zA-Z]+|[^a-zA-Z0-9]+$/g, '').replace(/\s+/g, ' ').trim();
+
+                            parsedData.push({ col1: postDate, col2: txnDate, col3: cleanDesc, col4: dr, col5: cr, col6: runningBalance.toFixed(2) });
+                        }
+                    }
+                });
+
+            } else if (activeTab === 'savings') {
+                // Future Sampath Savings Logic can go here
+            }
         }
         // ==========================================
         // LOGIC: BANK OF CEYLON
